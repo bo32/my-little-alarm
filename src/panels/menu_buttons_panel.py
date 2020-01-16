@@ -4,9 +4,7 @@ from PyQt5.QtGui import QIcon
 
 class MenuButtons(QGroupBox):
 
-    display_clock = pyqtSignal()
-    display_alarms = pyqtSignal()
-    display_settings = pyqtSignal()
+    switch_panel = pyqtSignal(int)
 
     def __init__(self):
         super().__init__()
@@ -42,11 +40,11 @@ class MenuButtons(QGroupBox):
         clicked_button = self.sender()
         # update panel
         if clicked_button == self.clock_button:
-            self.display_clock.emit()
+            self.switch_panel.emit(0)
         if clicked_button == self.alarms_button:
-            self.display_alarms.emit()
+            self.switch_panel.emit(1)
         if clicked_button == self.settings_button:
-            self.display_settings.emit()
+            self.switch_panel.emit(2)
 
 
 

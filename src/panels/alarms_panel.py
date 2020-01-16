@@ -1,7 +1,14 @@
 from PyQt5.QtWidgets import QGroupBox, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QWidget
+from PyQt5.QtCore import pyqtSignal
+
 from services.alarm_service import AlarmService
 
-class Alarms(QGroupBox):
+ON_LABEL = 'On'
+OFF_LABEL = 'Off'
+
+class AlarmsPanel(QGroupBox):
+
+    edit_alarms = pyqtSignal(int)
 
     def __init__(self):
         super().__init__()
@@ -17,34 +24,33 @@ class Alarms(QGroupBox):
             line = QWidget()
             layout = QHBoxLayout()
 
-            #
-            layout.addWidget(QLabel(alarm[1]))
-            #
-            is_active = alarm[4] == True
-            active_toggle = QPushButton('On' if is_active else 'Off') 
+            alarm_id = alarm[0]
+
+            layout.addWidget(QLabel(alarm[1])) # show label
+            layout.addWidget(QLabel(alarm[2])) # show time
+            
+            is_active = alarm[4]# == True
+            active_toggle = QPushButton(ON_LABEL if is_active else OFF_LABEL) 
             active_toggle.setCheckable(True)
             active_toggle.setChecked(is_active)
-
-            active_toggle.clicked.connect(lambda state, x=alarm: self.button_pushed(x))
-
+            active_toggle.clicked.connect(lambda state, x=alarm_id: self.active_button_pushed(x))
             layout.addWidget(active_toggle)
 
+            edit = QPushButton('Edit') 
+            edit.clicked.connect(lambda state, x=alarm_id: self.edit_alarm(x))
+            layout.addWidget(edit)
+
             line.setLayout(layout)
-
-            # line = QDataWidgetMapper()
-
             self.layout.addWidget(line)
 
-    # def set_alarm_active(self):
-    def button_pushed(self, alarm):
+    def active_button_pushed(self, alarm_id):
         state = self.sender().isChecked()
-        print(str(state))
-        self.sender().setText('On' if state else 'Off')
-        print(alarm)
-        alarm_id = alarm[0]
+        self.sender().setText(ON_LABEL if state else OFF_LABEL)
+        # alarm_id = alarm[0]
         self.alarmService.set_alarm_active(alarm_id, state)
 
-
+    def edit_alarm(self, alarm_id):
+        self.edit_alarms.emit(alarm_id)
 
 
 

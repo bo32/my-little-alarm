@@ -2,11 +2,9 @@ from PyQt5.QtWidgets import QWidget, QStackedWidget, QVBoxLayout
 from PyQt5.QtGui import QWindow
 from PyQt5.QtCore import pyqtSlot
 from panels.clock_panel import ClockPanel
-from panels.alarms_panel import Alarms
+from panels.alarms_panel import AlarmsPanel
 from panels.menu_buttons_panel import MenuButtons
 from panels.settings_panel import SettingsPanel
-
-@pyqtSlot()
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -15,25 +13,25 @@ class MainWindow(QWidget):
         layout = QVBoxLayout()
         self.stackedWidget =  QStackedWidget()
         self.stackedWidget.addWidget(ClockPanel())
-        self.stackedWidget.addWidget(Alarms())
+        self.alarms_panel = AlarmsPanel()
+        self.stackedWidget.addWidget(self.alarms_panel)
         self.stackedWidget.addWidget(SettingsPanel())
         layout.addWidget(self.stackedWidget)
 
         menu_buttons = MenuButtons()
-        menu_buttons.display_alarms.connect(self.display_alarms)
-        menu_buttons.display_clock.connect(self.display_clock)
-        menu_buttons.display_settings.connect(self.display_settings)
+        menu_buttons.switch_panel.connect(self.switch_panel)
         layout.addWidget(menu_buttons)
-
+        
+        self.alarms_panel.edit_alarms.connect(self.display_edit_alarm)
 
 
         self.setLayout(layout)
 
-    def display_clock(self):
-        self.stackedWidget.setCurrentIndex(0)
+    @pyqtSlot(int, name="switch_panel")
+    def switch_panel(self, panel_index):
+        self.stackedWidget.setCurrentIndex(panel_index)
 
-    def display_alarms(self):
-        self.stackedWidget.setCurrentIndex(1)
-
-    def display_settings(self):
-        self.stackedWidget.setCurrentIndex(2)
+    @pyqtSlot(int, name="edit_alarm")
+    def display_edit_alarm(self, alarm_id):
+        print('EDIT ' + str(alarm_id))
+        
