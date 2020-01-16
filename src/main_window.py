@@ -3,6 +3,7 @@ from PyQt5.QtGui import QWindow
 from PyQt5.QtCore import pyqtSlot
 from panels.clock_panel import ClockPanel
 from panels.alarms_panel import AlarmsPanel
+from panels.edit_alarm_panel import EditAlarmPanel
 from panels.menu_buttons_panel import MenuButtons
 from panels.settings_panel import SettingsPanel
 
@@ -34,4 +35,9 @@ class MainWindow(QWidget):
     @pyqtSlot(int, name="edit_alarm")
     def display_edit_alarm(self, alarm_id):
         print('EDIT ' + str(alarm_id))
+        # drop alarms panel
+        self.stackedWidget.insertWidget(1, EditAlarmPanel(alarm_id))
+        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.removeWidget(self.alarms_panel)
+        # display edit alarm panel
         

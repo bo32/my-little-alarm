@@ -37,6 +37,12 @@ class AlarmService:
         #     print(row[1])
         # session.close()
         return active_alarms
+    
+    def get_alarm_by_id(self, alarm_id):
+        s = ALARMS.select().where(ALARMS.c.alarm_id == alarm_id)
+        alarm = self.connection.execute(s).fetchone()
+        print(str(alarm))
+        return alarm
 
     def print_all_alarms(self):
         for alarm in self.get_all_alarms():
