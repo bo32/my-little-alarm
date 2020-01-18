@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import QWidget, QStackedWidget, QVBoxLayout
-from PyQt5.QtGui import QWindow
 from PyQt5.QtCore import pyqtSlot
 from panels.clock_panel import ClockPanel
 from panels.alarms_panel import AlarmsPanel
@@ -46,5 +45,5 @@ class MainWindow(QWidget):
 
     @pyqtSlot(name="quit")
     def hello(self):
-        print('hello')
+        print('should close the edit alarm panel')
         

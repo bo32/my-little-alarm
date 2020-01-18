@@ -6,6 +6,7 @@ from entities.alarm import Alarm
 
 ALARMS = Alarm.__table__
 
+
 class AlarmService:
     def __init__(self):
         super().__init__()
@@ -29,7 +30,8 @@ class AlarmService:
         # table = Alarm.__table__
         s = ALARMS.select().where(ALARMS.c.alarm_active == 1)
         # print(str(s))
-        active_alarms = self.connection.execute(s)
+        result_proxy = self.connection.execute(s)
+        active_alarms = result_proxy.fetchall()
         # session = DBSession()
         # active_alarms = session.query(Alarm).filter(Alarm.active==1).all()
         # for row in active_alarms:

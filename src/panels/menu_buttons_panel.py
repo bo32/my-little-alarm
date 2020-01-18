@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QGroupBox, QHBoxLayout, QPushButton
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QIcon
+
 
 class MenuButtons(QGroupBox):
 

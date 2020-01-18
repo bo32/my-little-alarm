@@ -27,6 +27,10 @@ class Alarm(Base):
     #     print('new_scheduled time: ' + scheduled_time)
     #     self.scheduled_time = scheduled_time
 
+    @hybrid_property
+    def get_cron(self):
+        return 'dummy cron'
+
 
     
     def __repr__(self):

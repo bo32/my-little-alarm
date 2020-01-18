@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QLabel, QVBoxLayout, QGroupBox, QSizePolicy
+from PyQt5.QtWidgets import QVBoxLayout, QGroupBox
 from PyQt5.QtCore import QTimer, QTime
 from dynamic_font_size_label import DynamicFontSizeLabel
+
 
 class ClockPanel(QGroupBox):
 

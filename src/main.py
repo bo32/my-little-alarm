@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from main_window import MainWindow
 
 from services.alarm_service import AlarmService
+from services.cron_service import CronService
 
 APP_FONT_COLOR = 'lightgray'
 APP_BACKGROUND_COLOR = 'slategray'
@@ -37,6 +38,12 @@ class MainApplication():
         # TODO Start CRON
         # print(str(len(active_alarms)))
         # alarmService.initiate_cron('whatever')
+        cron_service = CronService()
+        for alarm in active_alarms:
+            cron = alarm.scheduled_time
+            print(cron)
+            cron_service.start_alarm(cron)
+        cron_service.wait()
 
 
 if __name__ == "__main__":
