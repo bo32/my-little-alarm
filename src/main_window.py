@@ -36,8 +36,15 @@ class MainWindow(QWidget):
     def display_edit_alarm(self, alarm_id):
         print('EDIT ' + str(alarm_id))
         # drop alarms panel
-        self.stackedWidget.insertWidget(1, EditAlarmPanel(alarm_id))
+        edit_alarm_panel =  EditAlarmPanel(alarm_id)
+        self.stackedWidget.insertWidget(1, edit_alarm_panel)
         self.stackedWidget.setCurrentIndex(1)
         self.stackedWidget.removeWidget(self.alarms_panel)
         # display edit alarm panel
+
+        edit_alarm_panel.quit_signal.connect(self.hello)
+
+    @pyqtSlot(name="quit")
+    def hello(self):
+        print('hello')
         

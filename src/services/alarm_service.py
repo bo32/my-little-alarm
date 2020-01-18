@@ -37,6 +37,14 @@ class AlarmService:
         #     print(row[1])
         # session.close()
         return active_alarms
+
+    def update_scheduled_time(self, alarm, new_scheduled_time):
+        u = ALARMS.update()\
+            .where(ALARMS.c.alarm_id == alarm.alarm_id)\
+            .values(scheduled_time=new_scheduled_time)
+        print(str(u))
+        self.connection.execute(u)
+
     
     def get_alarm_by_id(self, alarm_id):
         s = ALARMS.select().where(ALARMS.c.alarm_id == alarm_id)

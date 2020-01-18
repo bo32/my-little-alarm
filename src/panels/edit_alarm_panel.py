@@ -1,21 +1,26 @@
 from PyQt5.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QVBoxLayout, QSlider, QWidget, QPushButton
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 
 from services.alarm_service import AlarmService
 
 class EditAlarmPanel(QGroupBox):
 
+    quit_signal = pyqtSignal()
+
     def __init__(self, alarm_id):
         super().__init__()
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel(str(alarm_id)))
 
-        alarm_service = AlarmService()
-        alarm = alarm_service.get_alarm_by_id(alarm_id)
-        print(str(alarm))
+        # layout.addWidget(QLabel(str(alarm_id)))
 
-        scheduled_time = alarm[2]
+        self.alarm_service = AlarmService()
+        self.alarm = self.alarm_service.get_alarm_by_id(alarm_id)
+        print(str(self.alarm))
+
+        layout.addWidget(QLabel(self.alarm[1]))
+
+        scheduled_time = self.alarm[2]
         print(scheduled_time)
         split_time = scheduled_time.split(':')
         self.hours = int(split_time[0])
@@ -50,8 +55,12 @@ class EditAlarmPanel(QGroupBox):
 
         save_cancel_buttons = QWidget()
         save_cancel_layout = QHBoxLayout()
-        save_cancel_layout.addWidget(QPushButton('Save'))
-        save_cancel_layout.addWidget(QPushButton('Cancel'))
+        save_button = QPushButton('Save')
+        save_button.clicked.connect(self.save)
+        save_cancel_layout.addWidget(save_button)
+        cancel_button = QPushButton('Cancel')
+        cancel_button.clicked.connect(self.quit)
+        save_cancel_layout.addWidget(cancel_button)
         save_cancel_buttons.setLayout(save_cancel_layout)
         layout.addWidget(save_cancel_buttons)
 
@@ -72,3 +81,18 @@ class EditAlarmPanel(QGroupBox):
         self.minutes = value
         self.update_time_label(self.minute_label, self.minutes)
         # self.minute_label.setText(str(self.minutes))
+
+    # def update_current_alarm(self):
+    #     new_scheduled_time = "%d:%d" % (self.hours, self.minutes)
+    #     print('before update (using getter): ' + self.alarm.scheduled_time)
+    #     print('new time: ' + new_scheduled_time)
+    #     self.alarm.scheduled_time =new_scheduled_time
+
+    def save(self):
+        # self.update_current_alarm()
+        new_scheduled_time = "%d:%d" % (self.hours, self.minutes)
+        self.alarm_service.update_scheduled_time(self.alarm, new_scheduled_time)
+        self.quit()
+
+    def quit(self):
+        self.quit_signal.emit()
