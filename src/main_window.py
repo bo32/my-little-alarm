@@ -11,7 +11,7 @@ class MainWindow(QWidget):
         super().__init__()
 
         layout = QVBoxLayout()
-        self.stackedWidget =  QStackedWidget()
+        self.stackedWidget = QStackedWidget()
         self.stackedWidget.addWidget(ClockPanel())
         self.alarms_panel = AlarmsPanel()
         self.stackedWidget.addWidget(self.alarms_panel)
