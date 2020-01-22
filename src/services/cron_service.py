@@ -16,7 +16,7 @@ class CronService(QObject):
         else:
             CronService.__instance = self
             self.scheduler = MyScheduler()
-            self.sound_service = SoundService()
+            self.sound_service = SoundService.get_instance()
             self.event= None
 
     def start_alarm(self, cron):
