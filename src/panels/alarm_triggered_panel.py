@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QGroupBox, QVBoxLayout, QLabel, QPushButton
 
+from src.services.sound_service import SoundService
+
 
 class AlarmTriggeredPanel(QGroupBox):
 
@@ -11,12 +13,17 @@ class AlarmTriggeredPanel(QGroupBox):
         # if snoozing enabled
         snooze = QPushButton('Snooze')
         self.layout.addWidget(snooze)
-        # TODO: implement snooze button
+        snooze.clicked.connect(self.snooze)
 
         dismiss = QPushButton('Dismiss')
         self.layout.addWidget(dismiss)
-        # TODO: implement dismiss button
+        dismiss.clicked.connect(self.dismiss)
 
         self.setLayout(self.layout)
 
+    def snooze(self):
+        SoundService.get_instance().pause_playing()
+
+    def dismiss(self):
+        SoundService.get_instance().stop_playing()
 

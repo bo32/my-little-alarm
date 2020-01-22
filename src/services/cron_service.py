@@ -30,9 +30,9 @@ class CronService(QObject):
 
     def test(self, name):
         print(name)
-        # self.sound_service.play_default_alarm_sound()
-        url = 'http://direct.franceinter.fr/live/franceinter-lofi.mp3'
-        self.sound_service.play_webradio(url)
+        self.sound_service.play_default_alarm_sound()
+        # url = 'http://direct.franceinter.fr/live/franceinter-lofi.mp3'
+        # self.sound_service.play_webradio(url)
         self.alarm_triggered.emit()
 
 
